@@ -9,23 +9,23 @@ Student.prototype.setSubject = function(subjectName) {
     this.subject = subjectName;
 }
 
-Student.prototype.addMarks = function(...marksToAdd) {
-    if (!this.marks) {
-        this.marks = [];
+Student.prototype.addMarks = function (...marks) {
+    if (this.hasOwnProperty("marks") === false) {
+      return "Пользователь отчислен";
+    } else {
+      this.marks.push(...marks);
     }
-    this.marks.push(...marksToAdd);
-}
-
-Student.prototype.getAverage = function() {
-    if (!this.marks || this.marks.length === 0) {
-        return 0;
+  };
+  
+  Student.prototype.getAverage = function () {
+    if (this.hasOwnProperty("marks") === false || this.marks.length === 0) {
+      return 0;
+    } else {
+      return this.marks.reduce((acc, mark) => acc + mark / this.marks.length, 0);
     }
-    const sum = this.marks.reduce((acc, mark) => acc + mark, 0);
-    return sum / this.marks.length;
-}
-
-Student.prototype.exclude = function(reason) {
-    this.subject = undefined;
-    this.marks = undefined;
+  };
+  
+  Student.prototype.exclude = function (reason) {
+    delete this.subject && delete this.marks;
     this.excluded = reason;
-}
+  };
